@@ -95,7 +95,9 @@ class TranscriptView(viewsets.ModelViewSet):
     serializer_class = TranscriptSerializer
 
     def get_queryset(self):
-        return Transcript.objects.filter(project__user=self.request.user)
+        project = self.request.query_params.get('project', 'default')
+
+        return Transcript.objects.filter(project=project).filter(project__user=self.request.user)
 
 
 class CreateTranscript(generics.CreateAPIView):
