@@ -73,15 +73,15 @@ export async function login(data: {
     return result;
 }
 
-export async function login2(username: string, password: string) {
-    const result = await apiFetch('/auth/login/', {
+export async function reset(data: {
+    email: string;
+}) {
+    const result = await apiFetch('/reset/', {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(data),
     });
 
-    setTokens(result.access, result.refresh);
-
-    return result;
+    return result
 }
 
 export async function getMe() {
