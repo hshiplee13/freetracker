@@ -73,10 +73,21 @@ export async function login(data: {
     return result;
 }
 
-export async function reset(data: {
+export async function forgot(data: {
     email: string;
 }) {
     const result = await apiFetch('/reset/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
+
+    return result
+}
+
+export async function reset(data: {
+    password: string;
+}, id: string, token: string) {
+    const result = await apiFetch(`/reset/${id}/${token}/`, {
         method: 'POST',
         body: JSON.stringify(data),
     });

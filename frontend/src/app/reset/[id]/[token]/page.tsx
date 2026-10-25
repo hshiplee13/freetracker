@@ -1,15 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { reset } from '@/lib/api';
 import Link from 'next/link';
 
-export default function Login() {
+export default function Reset() {
     const router = useRouter();
     const [form, setForm] = useState({
         password: '',
     });
+    const { id } = useParams<{ id: string }>();
+    const { token } = useParams<{ token: string }>();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -21,10 +23,11 @@ export default function Login() {
         e.preventDefault();
         setError('');
         setLoading(true);
-        try {
-            await reset(form);
+        try {            
+            await reset(form, id, token);
+            router.push('/login');
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Couldn't send password reset link. Check your email and try again.");
+            setError(err instanceof Error ? err.message : "Couldn't reset. Check your password and try again.");
         } finally {
             setLoading(false);
         }
@@ -42,7 +45,7 @@ export default function Login() {
                     <h1 className='font-display text-3xl text-ink mb-8'>Reset password</h1>
 
                     <label className='block text-sm text-ink/70 mb-1'>New password</label>
-                    <input className='w-full border border-ink/20 rounded-sm px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-moss' value={form.password} onChange={(e) => update('password', e.target.value)} required/>
+                    <input className='w-full border border-ink/20 rounded-sm px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-moss' type='password' value={form.password} onChange={(e) => update('password', e.target.value)} required/>
 
                     {error && <p className='text-clay text-sm mb-4'>{error}</p>}
 

@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { reset } from '@/lib/api';
+import { forgot } from '@/lib/api';
 import Link from 'next/link';
 
-export default function Login() {
+export default function Forgot() {
     const router = useRouter();
     const [form, setForm] = useState({
         email: '',
@@ -22,7 +22,8 @@ export default function Login() {
         setError('');
         setLoading(true);
         try {
-            await reset(form);
+            await forgot(form);
+            router.push('/forgot-confirm');
         } catch (err) {
             setError(err instanceof Error ? err.message : "Couldn't send password reset link. Check your email and try again.");
         } finally {
